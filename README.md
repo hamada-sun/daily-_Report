@@ -1,1 +1,1 @@
-SiiD_Step10学習のためのデータです
+SiiD　CareerコースSt_10の実践ファイルです。 
