@@ -1,0 +1,70 @@
+//各命令文を理解するために、main.jsを調整したもの
+//
+
+import { XXXX } from "XXX/YYY";
+
+const firebaseConfig = {
+  apiKey: "XXXX",
+  authDomain: "XXXX",
+  projectId:  "XXXX",
+  storageBucket:  "XXXX",
+  messagingSenderId:  "XXXX",
+  appId:  "XXXX"
+};
+
+
+const app = initializeApp(firebaseConfig); // Initialize Firebase
+const db = getFirestore(app);	// Cloud Firestoreの初期化
+
+const fetchHistoryData = async () => {	// Cloud Firestoreから取得したデータを表示
+  let tags = "";
+
+　// reportsコレクションデータを取得
+  const querySnapshot = await getDocs(collection(db, "reports"));
+
+  // データをテーブル票の形式に合わせてHTMLに挿入
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => ${doc.data()}`);
+
+    tags += `<tr>				
+		<td>${doc.data().date}</td>
+		<td>${doc.data().name}</td>
+		<td>${doc.data().work}</td>
+		<td>${doc.data().comment}</td>
+	     </tr>`
+  });　//バリデータでは、タグ記述について、これは許容されなかった
+
+  document.getElementById("js-history").innerHTML = tags;
+}
+
+
+// Cloud Firestoreから取得したデータを表示する
+if(document.getElementById("js-history")) {
+  fetchHistoryData(getDocs, collection, db);
+}
+
+
+
+
+// Cloud Firestoreにデータを送信する
+const submitData = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+
+  try {
+    const docRef = await addDoc(collection(db, "reports"), {
+      date: new Date(),
+      name: formData.get("name"),
+      work: formData.get("work"),
+      Comment: formData.get("comment")
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+// Cloud Firestoreにデータを送信する
+if(document.getElementById("js-form")) {
+  document.getElementById("js-form").addEventListener("submit", (e) => submitData(e));
+};
