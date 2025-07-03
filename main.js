@@ -47,7 +47,7 @@ const submitData = async (e) => {
       date: new Date(),
       name: formData.get("name"),
       work: formData.get("work"),
-      Comment: formData.get("comment")
+      comment: formData.get("comment")
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
