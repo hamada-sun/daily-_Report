@@ -13,4 +13,8 @@ export const submitData = async (e, addDoc, collection, db) => {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+
+  document.getElementById("name").value = "";
+  document.getElementById("work").value = "";
+  document.getElementById("comment").value = "";
 };
